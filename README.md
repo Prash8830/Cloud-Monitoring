@@ -3,6 +3,50 @@ Bayers hackathon project
 
 ---
 
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.12+
+- uv package manager
+
+### Setup
+
+```bash
+# Navigate to project directory
+cd Cloud-Monitoring
+
+# Create virtual environment
+uv venv --python 3.12
+
+# Activate virtual environment
+source .venv/bin/activate  # On macOS/Linux
+# .venv\Scripts\activate  # On Windows
+
+# Install dependencies
+uv pip install -e .
+```
+
+### Configuration
+
+Create a `.env` file with your API keys:
+
+```bash
+GEMINI_API_KEY="your-gemini-api-key"
+LANGFUSE_SECRET_KEY="your-langfuse-secret-key"
+LANGFUSE_PUBLIC_KEY="your-langfuse-public-key"
+LANGFUSE_HOST="https://cloud.langfuse.com"
+```
+
+### Run
+
+```bash
+python main.py
+```
+
+Output will be saved to `incident_report.txt`
+
+---
+
 ## 🔍 Logs Agent
 
 **Infer intent → Scope → Filter → Reason → Explain**

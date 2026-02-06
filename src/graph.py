@@ -1,4 +1,5 @@
-from typing import TypedDict
+from typing import TypedDict, Annotated
+from operator import add
 from langgraph.graph import StateGraph, END
 from langfuse import Langfuse
 from src.llm_factory import create_llm
@@ -34,18 +35,18 @@ def create_incident_graph(langfuse: Langfuse):
     
     def logs_node(state: GraphState) -> GraphState:
         logs_path = state["incident"].get("logs_path")
-        state["logs_findings"] = logs_agent.analyze(logs_path) if logs_path else []
+        state["logs_findings"] = logs_agent.analyze(logs_path, state["incident"]) if logs_path else []
         return state
     
     def telemetry_node(state: GraphState) -> GraphState:
         metrics_path = state["incident"].get("metrics_path")
-        state["telemetry_findings"] = telemetry_agent.analyze(metrics_path) if metrics_path else []
+        state["telemetry_findings"] = telemetry_agent.analyze(metrics_path, state["incident"]) if metrics_path else []
         return state
     
     def deployment_node(state: GraphState) -> GraphState:
         deployment_path = state["incident"].get("deployment_path")
         incident_time = state["incident"].get("alert_time")
-        state["deployment_findings"] = deployment_agent.analyze(deployment_path, str(incident_time)) if deployment_path else []
+        state["deployment_findings"] = deployment_agent.analyze(deployment_path, str(incident_time), state["incident"]) if deployment_path else []
         return state
     
     def reasoning_node(state: GraphState) -> GraphState:
@@ -98,10 +99,8 @@ def create_incident_graph(langfuse: Langfuse):
     
     workflow.set_entry_point("orchestrate")
     workflow.add_edge("orchestrate", "logs")
-    workflow.add_edge("orchestrate", "telemetry")
-    workflow.add_edge("orchestrate", "deployment")
-    workflow.add_edge("logs", "reasoning")
-    workflow.add_edge("telemetry", "reasoning")
+    workflow.add_edge("logs", "telemetry")
+    workflow.add_edge("telemetry", "deployment")
     workflow.add_edge("deployment", "reasoning")
     workflow.add_edge("reasoning", "report")
     workflow.add_edge("report", END)
