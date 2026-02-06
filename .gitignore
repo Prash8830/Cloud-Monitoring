@@ -10,4 +10,5 @@ __pycache__/
 dist/
 build/
 incident_report.txt
+reports/
 .DS_Store

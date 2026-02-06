@@ -24,6 +24,8 @@ class IncidentCommander:
             "deployment_findings": [],
             "root_cause_hypothesis": "",
             "confidence": 0,
+            "supporting_evidence": [],
+            "causal_chain": "",
             "recommended_actions": [],
             "final_report": {}
         }
@@ -60,14 +62,16 @@ class IncidentCommander:
         
         output.append("\n### 4. Root Cause Hypothesis")
         output.append(f"•  Explanation: {report['root_cause']['explanation']}")
+        output.append(f"•  Confidence: {report['root_cause']['confidence']}%")
         
-        output.append("\n### 5. Recommended Actions (Ranked)")
+        output.append("\n### 5. Supporting Evidence")
+        for evidence in report['root_cause']['supporting_evidence']:
+            output.append(f"  - {evidence}")
+        
+        output.append("\n### 6. Recommended Actions (Ranked)")
         for action in report["recommended_actions"]:
             output.append(f"{action['rank']}. {action['action']}")
             output.append(f"   Risk: {action['risk_level']} | Impact: {action['expected_impact']}")
-        
-        output.append("\n### 6. Confidence Score")
-        output.append(f"•  Confidence: {report['root_cause']['confidence']}%")
         
         output.append("\n### 7. Risk Notes")
         for note in report["risk_notes"]:

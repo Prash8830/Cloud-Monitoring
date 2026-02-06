@@ -1,11 +1,25 @@
 [
   {
+    "timestamp": "2024-01-15T14:20:00Z",
+    "level": "INFO",
+    "service": "payment-api",
+    "message": "Service started successfully",
+    "trace_id": "abc-100"
+  },
+  {
+    "timestamp": "2024-01-15T14:22:15Z",
+    "level": "WARN",
+    "service": "payment-api",
+    "message": "Database connection pool running low: 2/10 available",
+    "trace_id": "abc-120"
+  },
+  {
     "timestamp": "2024-01-15T14:23:45Z",
     "level": "ERROR",
     "service": "payment-api",
     "message": "Database connection timeout",
     "trace_id": "abc-123",
-    "stack_trace": "psycopg2.OperationalError: timeout expired"
+    "stack_trace": "psycopg2.OperationalError: timeout expired after 30000ms"
   },
   {
     "timestamp": "2024-01-15T14:23:50Z",
@@ -13,13 +27,94 @@
     "service": "payment-api",
     "message": "Failed to process payment",
     "trace_id": "abc-124",
-    "error": "Connection pool exhausted"
+    "error": "Connection pool exhausted - no available connections"
+  },
+  {
+    "timestamp": "2024-01-15T14:23:55Z",
+    "level": "ERROR",
+    "service": "payment-api",
+    "message": "Transaction rollback failed",
+    "trace_id": "abc-124",
+    "error": "Cannot rollback - connection already closed",
+    "stack_trace": "psycopg2.InterfaceError: connection already closed"
+  },
+  {
+    "timestamp": "2024-01-15T14:24:00Z",
+    "level": "ERROR",
+    "service": "payment-api",
+    "message": "OutOfMemoryError in payment processing thread",
+    "trace_id": "abc-126",
+    "stack_trace": "java.lang.OutOfMemoryError: GC overhead limit exceeded"
   },
   {
     "timestamp": "2024-01-15T14:24:10Z",
     "level": "WARN",
     "service": "payment-api",
-    "message": "Retry attempt 3/3 failed",
+    "message": "Retry attempt 3/3 failed for transaction",
     "trace_id": "abc-125"
+  },
+  {
+    "timestamp": "2024-01-15T14:24:20Z",
+    "level": "ERROR",
+    "service": "payment-api",
+    "message": "Circuit breaker OPEN for database connections",
+    "trace_id": "abc-127",
+    "details": "Failure threshold exceeded: 5 failures in 60 seconds"
+  },
+  {
+    "timestamp": "2024-01-15T14:24:30Z",
+    "level": "ERROR",
+    "service": "auth-service",
+    "message": "Failed to validate JWT token - downstream dependency unavailable",
+    "trace_id": "abc-128",
+    "error": "Connection refused to payment-api:8080"
+  },
+  {
+    "timestamp": "2024-01-15T14:24:45Z",
+    "level": "ERROR",
+    "service": "payment-api",
+    "message": "HealthCheck FAILED - database unreachable",
+    "trace_id": "abc-129",
+    "error": "Connect timeout to postgres:5432"
+  },
+  {
+    "timestamp": "2024-01-15T14:25:00Z",
+    "level": "CRITICAL",
+    "service": "payment-api",
+    "message": "Service degraded - entering graceful shutdown mode",
+    "trace_id": "abc-130"
+  },
+  {
+    "timestamp": "2024-01-15T14:25:30Z",
+    "level": "ERROR",
+    "service": "order-service",
+    "message": "Failed to confirm order - payment service unavailable",
+    "trace_id": "abc-131",
+    "error": "HTTP 503 Service Unavailable from payment-api"
+  },
+  {
+    "timestamp": "2024-01-15T14:26:00Z",
+    "level": "ERROR",
+    "service": "notification-service",
+    "message": "Unable to send payment confirmation email",
+    "trace_id": "abc-132",
+    "error": "Upstream dependency payment-api not responding"
+  },
+  {
+    "timestamp": "2024-01-15T14:30:00Z",
+    "level": "WARN",
+    "service": "payment-api",
+    "message": "SSL/TLS handshake timeout with external payment gateway",
+    "trace_id": "abc-140",
+    "details": "stripe-api.com:443 - handshake timeout after 10000ms"
+  },
+  {
+    "timestamp": "2024-01-15T14:31:00Z",
+    "level": "ERROR",
+    "service": "payment-api",
+    "message": "Rate limit exceeded for Stripe API",
+    "trace_id": "abc-141",
+    "error": "HTTP 429 Too Many Requests",
+    "retry_after": "60 seconds"
   }
 ]

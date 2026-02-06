@@ -7,9 +7,28 @@
     "status": "success",
     "changes": [
       "Updated database connection pool size from 20 to 10",
-      "Added new payment provider integration"
+      "Added new payment provider integration (Stripe)",
+      "Modified connection timeout from 60s to 30s",
+      "Enabled aggressive connection recycling"
     ],
-    "deployed_by": "ci-cd-pipeline"
+    "deployed_by": "ci-cd-pipeline",
+    "commit_hash": "a8f3b2c",
+    "rollback_available": true
+  },
+  {
+    "deployment_id": "deploy-790",
+    "service": "payment-api",
+    "version": "v2.3.2-hotfix",
+    "deployed_at": "2024-01-15T14:40:00Z",
+    "status": "success",
+    "changes": [
+      "ROLLBACK: Reverted connection pool size to 20",
+      "ROLLBACK: Restored connection timeout to 60s",
+      "Added circuit breaker for database connections"
+    ],
+    "deployed_by": "manual-hotfix",
+    "commit_hash": "c9d4e5f",
+    "rollback_available": false
   },
   {
     "deployment_id": "deploy-788",
@@ -18,7 +37,30 @@
     "deployed_at": "2024-01-15T10:00:00Z",
     "status": "success",
     "changes": [
-      "Performance optimizations"
+      "Performance optimizations",
+      "Updated logging framework"
+    ]
+  },
+  {
+    "deployment_id": "deploy-785",
+    "service": "auth-service",
+    "version": "v1.5.0",
+    "deployed_at": "2024-01-15T09:00:00Z",
+    "status": "success",
+    "changes": [
+      "Added new OAuth2 provider",
+      "Increased rate limits"
+    ]
+  },
+  {
+    "deployment_id": "deploy-786",
+    "service": "order-service",
+    "version": "v3.1.0",
+    "deployed_at": "2024-01-15T11:00:00Z",
+    "status": "success",
+    "changes": [
+      "Added async order processing",
+      "Updated payment-api client library"
     ]
   }
 ]
