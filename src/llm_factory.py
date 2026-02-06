@@ -1,10 +1,8 @@
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_anthropic import ChatAnthropic
-from langfuse import Langfuse
 
-
-def create_llm(langfuse: Langfuse = None):
+def create_llm():
     """Create LLM instance based on provider in .env
     
     Supports:
@@ -30,8 +28,8 @@ def create_llm(langfuse: Langfuse = None):
         if not api_key:
             raise ValueError("GEMINI_API_KEY not set in environment")
         
-        # Use gemini-1.5-flash for better performance and JSON output
-        model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+        # Use gemini-2.0-flash for better performance and JSON output
+        model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash-001")
         
         return ChatGoogleGenerativeAI(
             model=model,
@@ -40,3 +38,4 @@ def create_llm(langfuse: Langfuse = None):
             max_tokens=4096,
             convert_system_message_to_human=True  # Better compatibility
         )
+

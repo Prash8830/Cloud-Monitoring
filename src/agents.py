@@ -3,6 +3,7 @@ import re
 from pathlib import Path
 from typing import List, Union
 from langchain_core.messages import SystemMessage, HumanMessage
+from src.mcp_server import get_logs, get_metrics, get_deployments
 
 
 def extract_json(text: str) -> Union[dict, list, None]:
@@ -70,7 +71,12 @@ class LogsAgent:
         self.llm = llm
         
     def analyze(self, logs_path: str, incident: dict) -> List[str]:
-        logs_data = self._load_data(logs_path)
+        # Use MCP server to get logs
+        try:
+            logs_str = get_logs()
+            logs_data = json.loads(logs_str)
+        except Exception as e:
+            logs_data = {"error": str(e)}
         
         if isinstance(logs_data, dict) and logs_data.get("error"):
             return [f"Error loading logs: {logs_data.get('error')}"]
@@ -118,27 +124,19 @@ Example output: ["Database connection timeout at 14:23:45 - connection pool exha
         
         return findings if findings else ["No significant log patterns detected"]
     
-    def _load_data(self, path: str) -> Union[dict, list]:
-        if not path:
-            return {"error": "No logs path provided"}
-        
-        file_path = Path(path)
-        if not file_path.exists():
-            return {"error": f"Logs file not found: {path}"}
-        
-        try:
-            with open(file_path) as f:
-                return json.load(f)
-        except json.JSONDecodeError as e:
-            return {"error": f"Invalid JSON in logs file: {e}"}
-
-
+    
+    
 class TelemetryAgent:
     def __init__(self, llm):
         self.llm = llm
         
     def analyze(self, metrics_path: str, incident: dict) -> List[str]:
-        metrics_data = self._load_data(metrics_path)
+        # Use MCP server to get metrics
+        try:
+            metrics_str = get_metrics()
+            metrics_data = json.loads(metrics_str)
+        except Exception as e:
+            metrics_data = {"error": str(e)}
         
         if isinstance(metrics_data, dict) and metrics_data.get("error"):
             return [f"Error loading metrics: {metrics_data.get('error')}"]
@@ -191,20 +189,6 @@ Example: ["Latency p95 increased 29x from 120ms to 3500ms during incident", "Dat
                 findings.append(f"Database connections: {db.get('active', 0)}/{db.get('pool_size', 0)} active, {db.get('waiting', 0)} waiting")
         
         return findings if findings else ["Metrics data analyzed"]
-    
-    def _load_data(self, path: str) -> Union[dict, list]:
-        if not path:
-            return {"error": "No metrics path provided"}
-        
-        file_path = Path(path)
-        if not file_path.exists():
-            return {"error": f"Metrics file not found: {path}"}
-        
-        try:
-            with open(file_path) as f:
-                return json.load(f)
-        except json.JSONDecodeError as e:
-            return {"error": f"Invalid JSON in metrics file: {e}"}
 
 
 class DeploymentAgent:
@@ -212,7 +196,12 @@ class DeploymentAgent:
         self.llm = llm
         
     def analyze(self, deployment_path: str, incident_time: str, incident: dict) -> List[str]:
-        deployment_data = self._load_data(deployment_path)
+        # Use MCP server to get deployments
+        try:
+            deployment_str = get_deployments()
+            deployment_data = json.loads(deployment_str)
+        except Exception as e:
+            deployment_data = {"error": str(e)}
         
         if isinstance(deployment_data, dict) and deployment_data.get("error"):
             return [f"Error loading deployments: {deployment_data.get('error')}"]
@@ -255,20 +244,6 @@ Example: ["HIGH RISK: deploy-789 at 14:15 reduced DB pool from 20 to 10, just 8 
                 findings.append(f"{deploy.get('deployment_id')}: {deploy.get('service')} v{deploy.get('version')} at {deploy.get('deployed_at')} - {', '.join(changes[:2])}")
         
         return findings if findings else ["Deployment data analyzed"]
-    
-    def _load_data(self, path: str) -> Union[dict, list]:
-        if not path:
-            return {"error": "No deployment path provided"}
-        
-        file_path = Path(path)
-        if not file_path.exists():
-            return {"error": f"Deployment file not found: {path}"}
-        
-        try:
-            with open(file_path) as f:
-                return json.load(f)
-        except json.JSONDecodeError as e:
-            return {"error": f"Invalid JSON in deployment file: {e}"}
 
 
 class ReasoningAgent:

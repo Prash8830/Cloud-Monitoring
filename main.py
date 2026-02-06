@@ -1,6 +1,10 @@
 from datetime import datetime
 from pathlib import Path
+from dotenv import load_dotenv
 from src.commander import IncidentCommander
+
+load_dotenv()
+
 from src.models import IncidentInput
 
 

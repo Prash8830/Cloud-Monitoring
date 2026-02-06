@@ -1,6 +1,5 @@
 from typing import TypedDict
 from langgraph.graph import StateGraph, END
-from langfuse import Langfuse
 from src.llm_factory import create_llm
 from src.agents import OrchestratorAgent, LogsAgent, TelemetryAgent, DeploymentAgent, ReasoningAgent, ReportAgent
 from src.models import IncidentReport, Evidence, RootCause, MitigationAction
@@ -20,10 +19,10 @@ class GraphState(TypedDict):
     final_report: dict
 
 
-def create_incident_graph(langfuse: Langfuse):
+def create_incident_graph():
     """Create the incident investigation workflow graph."""
     
-    llm = create_llm(langfuse)
+    llm = create_llm()
     
     orchestrator = OrchestratorAgent(llm)
     logs_agent = LogsAgent(llm)

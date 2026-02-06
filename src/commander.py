@@ -1,19 +1,12 @@
 import os
 from dotenv import load_dotenv
-from langfuse import Langfuse
 from src.graph import create_incident_graph
 from src.models import IncidentInput
 
 
 class IncidentCommander:
     def __init__(self):
-        load_dotenv()
-        self.langfuse = Langfuse(
-            public_key=os.getenv("LANGFUSE_PUBLIC_KEY"),
-            secret_key=os.getenv("LANGFUSE_SECRET_KEY"),
-            host=os.getenv("LANGFUSE_HOST", "https://cloud.langfuse.com")
-        )
-        self.graph = create_incident_graph(self.langfuse)
+        self.graph = create_incident_graph()
     
     def investigate(self, incident: IncidentInput) -> dict:
         initial_state = {
