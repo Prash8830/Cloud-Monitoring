@@ -1,6 +1,6 @@
 # Cloud-Monitoring
 Bayers hackathon project
-![Cloud Monitoring Architecture](./cloud-monitoring.png)
+![Cloud Monitoring Architecture](./cloud monitoring.png)
 ---
 
 ## 🔍 Logs Agent
