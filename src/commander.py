@@ -79,3 +79,45 @@ class IncidentCommander:
         
         output.append("\n" + "=" * 80)
         return "\n".join(output)
+
+    def parse_formatted_report(self, formatted_str: str) -> dict:
+        """Parse the formatted report string back into a dictionary structure."""
+        lines = formatted_str.split('\n')
+        report = {}
+
+        current_section = None
+        current_data = []
+
+        for line in lines:
+            line = line.strip()
+            if line.startswith('### '):
+                if current_section:
+                    report[current_section] = self._parse_section(current_section, current_data)
+                current_section = line[4:].lower().replace(' ', '_').replace('(', '').replace(')', '').replace('/', '_')
+                current_data = []
+            elif current_section:
+                current_data.append(line)
+
+        if current_section:
+            report[current_section] = self._parse_section(current_section, current_data)
+
+        return report
+
+    def _parse_section(self, section: str, data: list) -> any:
+        """Parse individual sections into appropriate data structures."""
+        if section == '1._incident_summary':
+            summary = {}
+            for line in data:
+                if line.startswith('• '):
+                    key_value = line[2:].split(': ', 1)
+                    if len(key_value) == 2:
+                        key = key_value[0].lower().replace(' ', '_')
+                        summary[key] = key_value[1]
+            return summary
+        elif section in ['2._investigation_plan', '7._risk_notes', '8._next_steps']:
+            return [line for line in data if line and not line.startswith('=')]
+        elif section in ['3._findings_(evidence)', '4._root_cause_hypothesis', '5._recommended_actions_(ranked)', '6._confidence_score']:
+            # For simplicity, return the raw text; could be parsed further
+            return '\n'.join(data)
+        else:
+            return '\n'.join(data)

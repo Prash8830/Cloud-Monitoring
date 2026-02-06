@@ -1,0 +1,9 @@
+.git
+.venv
+__pycache__
+.env
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+incident_report.txt

@@ -23,7 +23,7 @@ source .venv/bin/activate  # On macOS/Linux
 # .venv\Scripts\activate  # On Windows
 
 # Install dependencies
-uv pip install -e .
+uv pip install --editable .
 ```
 
 ### Configuration
@@ -37,13 +37,52 @@ LANGFUSE_PUBLIC_KEY="your-langfuse-public-key"
 LANGFUSE_HOST="https://cloud.langfuse.com"
 ```
 
-### Run
+### Run CLI
 
 ```bash
 python main.py
 ```
 
 Output will be saved to `incident_report.txt`
+
+### Run API
+
+```bash
+python api.py
+```
+
+The API will start on http://localhost:8000
+
+#### Endpoint: POST /investigate
+
+Accepts JSON payload with incident details and returns the investigation report as JSON.
+
+Example request:
+```json
+{
+  "service": "payment-api",
+  "alert_time": "2024-01-01T12:00:00",
+  "symptoms": "High error rate and increased latency on /checkout endpoint",
+  "logs_path": "data/logs.json",
+  "metrics_path": "data/metrics.json",
+  "deployment_path": "data/deployments.json"
+}
+```
+
+Example response: JSON object with incident summary, evidence, root cause, actions, etc.
+
+#### Endpoint: POST /parse_report
+
+Accepts a formatted report string and parses it into structured JSON.
+
+Example request:
+```json
+{
+  "formatted_report": "================================================================================\nINCIDENT RESPONSE REPORT\n================================================================================\n\n### 1. Incident Summary\n• Service: payment-api\n• Impact: High error rate and increased latency on /checkout endpoint\n..."
+}
+```
+
+Example response: Parsed JSON structure with sections like incident_summary, investigation_plan, etc.
 
 ---
 
