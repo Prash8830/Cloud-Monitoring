@@ -1,0 +1,24 @@
+[
+  {
+    "deployment_id": "deploy-789",
+    "service": "payment-api",
+    "version": "v2.3.1",
+    "deployed_at": "2024-01-15T14:15:00Z",
+    "status": "success",
+    "changes": [
+      "Updated database connection pool size from 20 to 10",
+      "Added new payment provider integration"
+    ],
+    "deployed_by": "ci-cd-pipeline"
+  },
+  {
+    "deployment_id": "deploy-788",
+    "service": "payment-api",
+    "version": "v2.3.0",
+    "deployed_at": "2024-01-15T10:00:00Z",
+    "status": "success",
+    "changes": [
+      "Performance optimizations"
+    ]
+  }
+]

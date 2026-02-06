@@ -1,0 +1,31 @@
+{
+  "service": "payment-api",
+  "time_range": "2024-01-15T14:00:00Z to 2024-01-15T15:00:00Z",
+  "metrics": {
+    "cpu_usage": {
+      "avg": 45,
+      "max": 78,
+      "spike_at": "2024-01-15T14:23:00Z"
+    },
+    "memory_usage": {
+      "avg": 62,
+      "max": 89,
+      "spike_at": "2024-01-15T14:23:00Z"
+    },
+    "latency_p95": {
+      "before_incident": 120,
+      "during_incident": 3500,
+      "unit": "ms"
+    },
+    "error_rate": {
+      "before_incident": 0.1,
+      "during_incident": 15.3,
+      "unit": "percent"
+    },
+    "request_rate": {
+      "avg": 1200,
+      "spike": 3400,
+      "spike_at": "2024-01-15T14:22:00Z"
+    }
+  }
+}

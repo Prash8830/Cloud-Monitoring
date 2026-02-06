@@ -1,0 +1,25 @@
+[
+  {
+    "timestamp": "2024-01-15T14:23:45Z",
+    "level": "ERROR",
+    "service": "payment-api",
+    "message": "Database connection timeout",
+    "trace_id": "abc-123",
+    "stack_trace": "psycopg2.OperationalError: timeout expired"
+  },
+  {
+    "timestamp": "2024-01-15T14:23:50Z",
+    "level": "ERROR",
+    "service": "payment-api",
+    "message": "Failed to process payment",
+    "trace_id": "abc-124",
+    "error": "Connection pool exhausted"
+  },
+  {
+    "timestamp": "2024-01-15T14:24:10Z",
+    "level": "WARN",
+    "service": "payment-api",
+    "message": "Retry attempt 3/3 failed",
+    "trace_id": "abc-125"
+  }
+]
